@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+@theme {
+    --color-Neutral-0: hsl(0, 0%, 100%);
+    --color-Neutral-300: hsl(252, 6%, 83%);
+    --color-Neutral-500: hsl(245, 15%, 58%);
+    --color-Neutral-700: hsl(245, 19%, 35%);
+    --color-Neutral-900: hsl(248, 70%, 10%);
+
+    --color-Orange-500: hsl(7, 88%, 67%);
+    --color-Orange-700: hsl(7, 71%, 60%);
+
+    /* - Gradient (text): hsl(7, 86%, 67%) to hsl(0, 0%, 100%) */
+}
+
+body {
+    @apply w-full min-h-screen bg-[url('./assets/images/background-mobile.png')] 
+    md:bg-[url('./assets/images/background-tablet.png')] 
+    lg:bg-[url('./assets/images/background-desktop.png')] bg-cover bg-center;
+}
+
+main {
+    @apply bg-[url('./assets/images/pattern-lines.svg')] 
+    md:bg-[url('./assets/images/pattern-lines.svg')] 
+    lg:bg-[url('./assets/images/pattern-lines.svg')];
+}
