@@ -13,19 +13,25 @@ import mainLogo from "./assets/images/logo-full.svg";
 
 function App() {
     return (
-        <main className="py-8 px-4 w-full min-h-screen bg-cover bg-center bg-no-repeat  relative">
+        <main className="py-10 px-6 w-full mx-auto min-h-screen bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat relative lg:bg-size-[cover,7.5rem,40%]">
             <header>
-                <img src={mainLogo} alt="Coding Conf" />
+                <img
+                    src={mainLogo}
+                    alt="Coding Conf"
+                    className="mx-auto w-40 mb-8"
+                />
+                <h1 className="font-bold text-[1.625rem] text-center mb-5">
+                    Your Journey to Coding Conf 2025 Starts Here!
+                </h1>
             </header>
             <p>
-                Your Journey to Coding Conf 2025 Starts Here! Secure your spot
-                at next year's biggest coding conference. Upload Avatar Drag and
-                drop or click to upload Upload your photo (JPG or PNG, max size:
-                500KB). Full Name Email Address example@email.com GitHub
-                Username @yourusername Generate My Ticket Congrats, ! Your
-                ticket is ready. We've emailed your ticket to and will send
-                updates in the run up to the event. Coding Conf Jan 31, 2025 /
-                Austin, TX
+                Secure your spot at next year's biggest coding conference.
+                Upload Avatar Drag and drop or click to upload Upload your photo
+                (JPG or PNG, max size: 500KB). Full Name Email Address
+                example@email.com GitHub Username @yourusername Generate My
+                Ticket Congrats, ! Your ticket is ready. We've emailed your
+                ticket to and will send updates in the run up to the event.
+                Coding Conf Jan 31, 2025 / Austin, TX
             </p>
         </main>
     );
