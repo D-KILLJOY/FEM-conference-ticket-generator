@@ -32,3 +32,7 @@ main {
     md:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg')] 
     lg:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-desktop.svg')] text-Neutral-0 font-Inconsolata;
 }
+
+.ticket {
+    @apply bg-[url('./assets/images/pattern-ticket.svg')] bg-center bg-cover;
+}

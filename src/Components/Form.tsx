@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import iconUpload from "../assets/images/icon-upload.svg";
 import { MdInfoOutline } from "react-icons/md";
 
+type dispState = "form" | "ticket";
+
+type FieldKey = "name" | "email" | "github";
+
 type InputField = {
-    value: null | string;
+    value: string;
     error: boolean;
     errormsg: string;
 };
+
+interface formProps {
+    dispToggle: (state: dispState) => void;
+}
 
 type UserDetails = {
     avatar: InputField;
@@ -15,7 +23,7 @@ type UserDetails = {
     github: InputField;
 };
 
-function Form() {
+function Form({ dispToggle }: formProps) {
     const [userDetails, setUserDetails] = useState<UserDetails>({
         avatar: {
             value: "",
@@ -28,8 +36,10 @@ function Form() {
     });
 
     const maxSize = 500 * 1024;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const usernameRegex = /^@[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/;
 
-    const handleFile = (file: File | undefined) => {
+    function handleFile(file: File | undefined) {
         if (!file) return;
 
         if (userDetails.avatar.value) {
@@ -49,7 +59,7 @@ function Form() {
             setUserDetails((prev) => ({
                 ...prev,
                 avatar: {
-                    value: null,
+                    value: "",
                     error: true,
                     errormsg: "Only PNG or JPG images allowed",
                 },
@@ -62,7 +72,7 @@ function Form() {
             setUserDetails((prev) => ({
                 ...prev,
                 avatar: {
-                    value: null,
+                    value: "",
                     error: true,
                     errormsg:
                         "File too large, Please upload a photo under under 500KB.",
@@ -79,7 +89,19 @@ function Form() {
                 errormsg: " ",
             },
         }));
-    };
+    }
+
+    function updateInput(key: FieldKey, value: string) {
+        setUserDetails((prev) => ({
+            ...prev,
+            [key]: {
+                ...prev[key],
+                value,
+                error: false,
+                errormsg: "",
+            },
+        }));
+    }
 
     useEffect(() => {
         return () => {
@@ -94,27 +116,101 @@ function Form() {
         setUserDetails((prev) => ({
             ...prev,
             avatar: {
-                value: null,
+                value: "",
                 error: false,
                 errormsg: "",
             },
         }));
     }
 
-    const imgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    function imgChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (file) {
             handleFile(file);
         }
-    };
+    }
 
-    const imgDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    function imgDrop(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault();
         const file = e.dataTransfer.files?.[0];
         if (file) {
             handleFile(file);
         }
-    };
+    }
+
+    function formValidate(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        const updatedStatus = {
+            avatar: {
+                ...userDetails.avatar,
+                error: userDetails.avatar.value.trim() === "",
+                errormsg:
+                    userDetails.name.value.trim() === ""
+                        ? "You need to upload a photo"
+                        : "",
+            },
+
+            name: {
+                ...userDetails.name,
+                error:
+                    userDetails.name.value.trim() === "" ||
+                    userDetails.name.value.trim().length < 2,
+
+                errormsg:
+                    userDetails.name.value.trim() === ""
+                        ? "Name cannot be empty"
+                        : userDetails.name.value.trim().length < 2
+                          ? "Name must be at least 2 Characters long"
+                          : "",
+            },
+
+            email: {
+                ...userDetails.email,
+                error:
+                    userDetails.email.value.trim() === "" ||
+                    !emailRegex.test(userDetails.email.value.trim()),
+                errormsg:
+                    userDetails.email.value.trim() === ""
+                        ? "Email cannot be empty"
+                        : emailRegex.test(userDetails.email.value.trim())
+                          ? ""
+                          : "Looks like this is not an email",
+            },
+            github: {
+                ...userDetails.github,
+                error:
+                    userDetails.github.value.trim() === "" ||
+                    !usernameRegex.test(userDetails.github.value.trim()) ||
+                    userDetails.github.value.trim().length < 2,
+                errormsg:
+                    userDetails.github.value.trim() === ""
+                        ? "Github username cannot be empty"
+                        : usernameRegex.test(userDetails.github.value.trim())
+                          ? "Invalid username, include an @ before your username"
+                          : "",
+            },
+        };
+
+        setUserDetails(updatedStatus);
+        toggleState(updatedStatus);
+    }
+
+    function toggleState(status: UserDetails) {
+        const allValid =
+            status.avatar.value.trim() !== "" &&
+            !status.avatar.error &&
+            status.name.value.trim() !== "" &&
+            !status.name.error &&
+            status.email.value.trim() !== "" &&
+            !status.email.error &&
+            status.github.value.trim() !== "" &&
+            !status.github.error;
+
+        if (!allValid) return;
+
+        dispToggle("ticket");
+    }
 
     return (
         <>
@@ -126,30 +222,32 @@ function Form() {
                     Secure your spot at next year's biggest coding conference.
                 </p>
             </header>
-            <form className="w-full max-w-100">
+            <form onSubmit={formValidate} className="w-full max-w-100">
                 <div className="mb-4">
                     <p className="mb-2">Upload Avatar</p>
-                    <label
+                    <div
                         onDrop={imgDrop}
                         onDragOver={(e) => e.preventDefault()}
                         className="border w-full border-dashed flex flex-col justify-center items-center bg-Neutral-700/30 p-3 rounded-2xl border-Neutral-500 "
                     >
-                        <img
-                            src={
-                                userDetails.avatar.value
-                                    ? userDetails.avatar.value
-                                    : iconUpload
-                            }
-                            alt=""
-                            className={`border-2 border-Neutral-500 bg-Neutral-700/55 rounded-xl mb-4 w-12 h-12 ${userDetails.avatar.value ? "" : "p-2"}`}
-                        />
-                        <input
-                            onChange={imgChange}
-                            type="file"
-                            accept="image/png,image/jpeg"
-                            hidden
-                            className="w-full"
-                        />
+                        <label className="mb-4 cursor-pointer">
+                            <img
+                                src={
+                                    userDetails.avatar.value
+                                        ? userDetails.avatar.value
+                                        : iconUpload
+                                }
+                                alt=""
+                                className={`border-2 border-Neutral-500 bg-Neutral-700/55 rounded-xl  w-12 h-12 ${userDetails.avatar.value ? "" : "p-2"}`}
+                            />
+                            <input
+                                onChange={imgChange}
+                                type="file"
+                                accept="image/png,image/jpeg"
+                                hidden
+                                className="w-full"
+                            />
+                        </label>
                         {userDetails.avatar.value ? (
                             <div className="flex gap-2 items-center">
                                 <button
@@ -171,7 +269,7 @@ function Form() {
                                 Drag and drop or click to upload
                             </p>
                         )}
-                    </label>
+                    </div>
                     {userDetails.avatar.error === false ? (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
                             <MdInfoOutline className="text-sm" />
@@ -191,42 +289,66 @@ function Form() {
 
                     <input
                         type="text"
-                        className="w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg"
+                        id="name"
+                        name="name"
+                        value={userDetails.name.value}
+                        onChange={(e) =>
+                            updateInput("name", e.currentTarget.value)
+                        }
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.name.error ? "border-red-400" : ""}`}
                         placeholder="John Doe"
                     />
 
-                    <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
-                        <MdInfoOutline className="text-sm" />
-                        <p className="co">Name cannot be Empty.</p>
-                    </span>
+                    {userDetails.name.error && (
+                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                            <MdInfoOutline className="text-sm" />
+                            <p>{userDetails.name.errormsg}</p>
+                        </span>
+                    )}
                 </div>
                 <div className="mb-4">
                     <p className="mb-2">Email Address</p>
 
                     <input
-                        type="text"
-                        className="w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg cursor-pointer"
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={userDetails.email.value}
+                        onChange={(e) =>
+                            updateInput("email", e.currentTarget.value)
+                        }
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.email.error ? "border-red-400" : ""}`}
                         placeholder="User@mail.com"
                     />
 
-                    <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
-                        <MdInfoOutline className="text-sm" />
-                        <p className="co">Email cannot be Empty.</p>
-                    </span>
+                    {userDetails.email.error && (
+                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                            <MdInfoOutline className="text-sm" />
+                            <p>{userDetails.email.errormsg}</p>
+                        </span>
+                    )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-6">
                     <p className="mb-2">GitHub Username</p>
 
                     <input
                         type="text"
-                        className="w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg cursor-pointer"
+                        id="github"
+                        name="github"
+                        value={userDetails.github.value}
+                        onChange={(e) =>
+                            updateInput("github", e.currentTarget.value)
+                        }
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.github.error ? "border-red-400" : ""}`}
                         placeholder="@yourusername"
                     />
 
-                    <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
-                        <MdInfoOutline className="text-sm" />
-                        <p className="co">UserName cannot be Empty.</p>
-                    </span>
+                    {userDetails.github.error && (
+                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                            <MdInfoOutline className="text-sm" />
+                            <p>{userDetails.github.errormsg}</p>
+                        </span>
+                    )}
                 </div>
 
                 <button
