@@ -1,3 +1,4 @@
+import { useState } from "react";
 import mainLogo from "./assets/images/logo-full.svg";
 // import circlePattern from "./assets/images/pattern-circle.svg";
 // import linesPattern from "./assets/images/pattern-lines.svg";
@@ -9,15 +10,19 @@ import mainLogo from "./assets/images/logo-full.svg";
 // import squigglybtmdsk from "./assets/images/pattern-squiggly-line-bottom-desktop.svg";
 // import squigglyTop from "./assets/images/pattern-squiggly-line-top.svg";
 import Form from "./Components/Form.tsx";
+import Ticket from "./Components/Ticket.tsx";
 function App() {
+    const [status, setStatus] = useState<"form" | "ticket">("form");
+
     return (
-        <main className="py-10 pb-25 px-6 w-full mx-auto min-h-screen bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat relative lg:bg-size-[cover,7.5rem,40%]">
+        <main className="py-10 pb-25 px-4 w-full mx-auto min-h-screen bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat relative lg:bg-size-[cover,7.5rem,40%] flex flex-col items-center">
             <img
                 src={mainLogo}
                 alt="Coding Conf"
                 className="mx-auto w-40 mb-10"
             />
-            <Form />
+
+            {status === "form" ? <Form /> : <Ticket />}
         </main>
     );
 }
