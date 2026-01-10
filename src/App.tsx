@@ -1,11 +1,9 @@
 import { useState } from "react";
 import mainLogo from "./assets/images/logo-full.svg";
+
 // import circlePattern from "./assets/images/pattern-circle.svg";
 // import linesPattern from "./assets/images/pattern-lines.svg";
-// import logoIcon from "./assets/images/logo-mark.svg";
-// import userImg from "./assets/images/image-avatar.jpg";
-// import iconGithub from "./assets/images/icon-github.svg";
-// import patternTicket from "./assets/images/pattern-ticket.svg";
+
 // import squigglybtmmbl from "./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg";
 // import squigglybtmdsk from "./assets/images/pattern-squiggly-line-bottom-desktop.svg";
 // import squigglyTop from "./assets/images/pattern-squiggly-line-top.svg";
