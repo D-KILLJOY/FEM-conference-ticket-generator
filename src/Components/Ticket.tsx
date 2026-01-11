@@ -1,7 +1,7 @@
 import patternTicket from "../assets/images/pattern-ticket.svg";
 import iconGithub from "../assets/images/icon-github.svg";
 import logoIcon from "../assets/images/logo-mark.svg";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type InputField<T> = {
     value: T;
@@ -21,17 +21,24 @@ interface ticketProps {
 }
 
 function Ticket({ userDets }: ticketProps) {
-    const avatarPreview = useMemo(() => {
-        return userDets.avatar.value
-            ? URL.createObjectURL(userDets.avatar.value)
-            : undefined;
-    }, [userDets.avatar.value]);
+    const [avatarPreview, setAvatarPreview] = useState<string | undefined>(
+        undefined
+    );
 
     useEffect(() => {
+        if (!userDets.avatar.value) {
+            setAvatarPreview(undefined);
+            return;
+        }
+
+        const url = URL.createObjectURL(userDets.avatar.value);
+        setAvatarPreview(url);
+
         return () => {
-            if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+            URL.revokeObjectURL(url);
         };
-    }, [avatarPreview]);
+    }, [userDets.avatar.value]);
+
     return (
         <>
             <header className="px-2 w-full mx-auto md:max-w-130 lg:max-w-180">
@@ -42,7 +49,7 @@ function Ticket({ userDets }: ticketProps) {
                     </span>{" "}
                     ! Your ticket is ready.
                 </h1>
-                <p className="mb-8 text-Neutral-500 text-lg leading-7 font-medium text-center md:text-xl">
+                <p className="mb-8 text-Neutral-500 text-lg leading-7 font-medium text-center md:text-xl  lg:max-w-110 mx-auto">
                     We've emailed your ticket to{" "}
                     <span className="text-Orange-700">
                         {userDets.email.value}

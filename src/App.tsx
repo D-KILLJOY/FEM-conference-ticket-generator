@@ -37,7 +37,7 @@ function App() {
 
     return (
         <main
-            className="py-10 pb-25 px-4 w-full mx-auto min-h-screen flex flex-col items-center relative bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat md:bg-size-[cover,17.5rem,25.625rem] md:bg-position-[center,100%_7%,bottom_left] lg:bg-size-[contain,27.5rem,50%] lg:[background-repeat:repeat,no-repeat,no-repeat]
+            className="py-10 pb-25 px-4 w-full mx-auto min-h-screen flex flex-col items-center relative bg-size-[cover,7.5rem,15.625rem,8rem] bg-position-[center,100%_4%,bottom_left,130%_60%] bg-no-repeat md:bg-size-[cover,17.5rem,25.625rem,12rem] md:bg-position-[center,100%_7%,bottom_left,90%_55%] lg:bg-size-[cover,27.5rem,50%,15rem] lg:bg-position-[center,100%_7%,bottom_left,70%_55%]
 "
         >
             <img

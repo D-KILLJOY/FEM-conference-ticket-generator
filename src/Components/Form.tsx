@@ -30,7 +30,7 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
 
     const maxSize = 500 * 1024;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const usernameRegex = /^@[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/;
+    const usernameRegex = /^@[a-zA-Z0-9_](?:[a-zA-Z0-9_.-]{0,28}[a-zA-Z0-9])?$/;
 
     function handleFile(file: File | undefined) {
         if (!file) return;
@@ -222,7 +222,7 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
                     <div
                         onDrop={imgDrop}
                         onDragOver={(e) => e.preventDefault()}
-                        className="border w-full border-dashed flex flex-col justify-center items-center bg-Neutral-700/30 p-3 rounded-2xl border-Neutral-500 "
+                        className="border w-full border-dashed flex flex-col justify-center items-center bg-Neutral-700/35 p-3 rounded-2xl border-Neutral-500 "
                     >
                         <label
                             className="mb-4 cursor-pointer"
@@ -355,7 +355,7 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
 
                 <button
                     type="submit"
-                    className="w-full border border-Orange-500 bg-Orange-500 text-Neutral-900 font-bold rounded-lg p-3 cursor-pointer"
+                    className="w-full border border-Orange-500 bg-Orange-500 text-Neutral-900 font-bold rounded-lg p-3 cursor-pointer focus:outline-2 focus:outline-Neutral-500 focus:outline-offset-2 "
                 >
                     Generate My Ticket
                 </button>

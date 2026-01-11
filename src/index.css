@@ -37,7 +37,11 @@ body {
 }
 
 main {
-    @apply bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg')] 
-    md:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg')] 
-    lg:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-desktop.svg')] text-Neutral-0 font-Inconsolata;
+    @apply bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg'),url('./assets/images/pattern-circle.svg')] 
+    md:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg'),url('./assets/images/pattern-circle.svg')] 
+    lg:bg-[url('./assets/images/pattern-lines.svg'),url('./assets/images/pattern-squiggly-line-top.svg'),url('./assets/images/pattern-squiggly-line-bottom-desktop.svg'),url('./assets/images/pattern-circle.svg')] text-Neutral-0 font-Inconsolata;
+}
+
+input {
+    @apply focus:outline-2 focus:outline-Neutral-500 focus:outline-offset-2 bg-Neutral-700/35;
 }
