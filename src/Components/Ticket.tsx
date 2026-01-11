@@ -1,7 +1,7 @@
 import patternTicket from "../assets/images/pattern-ticket.svg";
 import iconGithub from "../assets/images/icon-github.svg";
 import logoIcon from "../assets/images/logo-mark.svg";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type InputField<T> = {
     value: T;
