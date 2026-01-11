@@ -20,7 +20,7 @@ function Ticket() {
                     and will send updates in the run up to the event.
                 </p>
             </header>
-            <section className="relative w-full max-w-100 min-h-40 h-fit mt-10 mb-30">
+            <section className="relative w-full max-w-100 min-h-40 h-fit mt-10 mb-40">
                 <img src={patternTicket} alt="" />
 
                 <article className="w-full h-full p-4 pe-0 absolute inset-0 flex">

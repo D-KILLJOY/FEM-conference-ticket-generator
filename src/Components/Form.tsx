@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import iconUpload from "../assets/images/icon-upload.svg";
 import { MdInfoOutline } from "react-icons/md";
 
@@ -24,6 +24,8 @@ type UserDetails = {
 };
 
 function Form({ dispToggle }: formProps) {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const [userDetails, setUserDetails] = useState<UserDetails>({
         avatar: {
             value: "",
@@ -41,19 +43,6 @@ function Form({ dispToggle }: formProps) {
 
     function handleFile(file: File | undefined) {
         if (!file) return;
-
-        if (userDetails.avatar.value) {
-            setUserDetails((prev) => ({
-                ...prev,
-                avatar: {
-                    value: userDetails.avatar.value,
-                    error: true,
-                    errormsg: "An image has already been uploaded",
-                },
-            }));
-
-            return;
-        }
 
         if (!["image/png", "image/jpeg"].includes(file.type)) {
             setUserDetails((prev) => ({
@@ -131,6 +120,17 @@ function Form({ dispToggle }: formProps) {
     }
 
     function imgDrop(e: React.DragEvent<HTMLDivElement>) {
+        if (userDetails.avatar.value) {
+            setUserDetails((prev) => ({
+                ...prev,
+                avatar: {
+                    value: userDetails.avatar.value,
+                    error: true,
+                    errormsg: "An image has already been uploaded",
+                },
+            }));
+            return;
+        }
         e.preventDefault();
         const file = e.dataTransfer.files?.[0];
         if (file) {
@@ -230,7 +230,10 @@ function Form({ dispToggle }: formProps) {
                         onDragOver={(e) => e.preventDefault()}
                         className="border w-full border-dashed flex flex-col justify-center items-center bg-Neutral-700/30 p-3 rounded-2xl border-Neutral-500 "
                     >
-                        <label className="mb-4 cursor-pointer">
+                        <label
+                            className="mb-4 cursor-pointer"
+                            htmlFor={userDetails.avatar.value ? "" : "avatar"}
+                        >
                             <img
                                 src={
                                     userDetails.avatar.value
@@ -240,26 +243,31 @@ function Form({ dispToggle }: formProps) {
                                 alt=""
                                 className={`border-2 border-Neutral-500 bg-Neutral-700/55 rounded-xl  w-12 h-12 ${userDetails.avatar.value ? "" : "p-2"}`}
                             />
-                            <input
-                                onChange={imgChange}
-                                type="file"
-                                accept="image/png,image/jpeg"
-                                hidden
-                                className="w-full"
-                            />
                         </label>
+                        <input
+                            onChange={imgChange}
+                            ref={fileInputRef}
+                            id="avatar"
+                            type="file"
+                            accept="image/png,image/jpeg"
+                            hidden
+                            className="w-full"
+                        />
                         {userDetails.avatar.value ? (
                             <div className="flex gap-2 items-center">
                                 <button
                                     type="button"
                                     onClick={removeImg}
-                                    className="px-2 pt-1 rounded underline text-Neutral-300 bg-Neutral-700 text-sm"
+                                    className="px-2 pt-1 rounded underline text-Neutral-300 bg-Neutral-700 text-sm cursor-pointer"
                                 >
                                     Remove image
                                 </button>
                                 <button
                                     type="button"
-                                    className="px-2 pt-1 rounded text-Neutral-300 bg-Neutral-700 text-sm"
+                                    onClick={() =>
+                                        fileInputRef.current?.click()
+                                    }
+                                    className="px-2 pt-1 rounded text-Neutral-300 bg-Neutral-700 text-sm cursor-pointer"
                                 >
                                     Change image
                                 </button>

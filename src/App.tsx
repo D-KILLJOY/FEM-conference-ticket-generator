@@ -1,19 +1,12 @@
 import { useState } from "react";
 import mainLogo from "./assets/images/logo-full.svg";
-
-// import circlePattern from "./assets/images/pattern-circle.svg";
-// import linesPattern from "./assets/images/pattern-lines.svg";
-
-// import squigglybtmmbl from "./assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg";
-// import squigglybtmdsk from "./assets/images/pattern-squiggly-line-bottom-desktop.svg";
-// import squigglyTop from "./assets/images/pattern-squiggly-line-top.svg";
 import Form from "./Components/Form.tsx";
 import Ticket from "./Components/Ticket.tsx";
 
 type dispState = "form" | "ticket";
 
 function App() {
-    const [status, setStatus] = useState<dispState>("ticket");
+    const [status, setStatus] = useState<dispState>("form");
 
     function dispSet(stat: dispState) {
         setStatus(stat);
