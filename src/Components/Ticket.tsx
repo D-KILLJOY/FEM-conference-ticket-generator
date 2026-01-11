@@ -20,41 +20,53 @@ function Ticket() {
                     and will send updates in the run up to the event.
                 </p>
             </header>
-            <section className="relative w-full max-w-100 min-h-40 h-fit my-10 border-Orange-500 border-2 ">
-                <img src={patternTicket} alt="" className="absolute inset-0 " />
-                <div className="p-4 relative z-30 w-full h-full flex flex-col justify-between border">
-                    <div className="flex gap-3 items-start">
-                        <img src={logoIcon} alt="Coding Conf" className="w-7" />
-                        <article>
-                            <p className="text-xl font-bold leading-3 mb-4">
-                                Coding Conf
-                            </p>
-                            <p className="text-Neutral-500 text-sm">
-                                Jan 31, 2025 / Austin, TX
-                            </p>
-                        </article>
+            <section className="relative w-full max-w-100 min-h-40 h-fit mt-10 mb-30">
+                <img src={patternTicket} alt="" />
+
+                <article className="w-full h-full p-4 pe-0 absolute inset-0 flex">
+                    <div className="z-30 w-full h-full flex flex-col justify-between ">
+                        <div className="flex gap-3 items-start">
+                            <img
+                                src={logoIcon}
+                                alt="Coding Conf"
+                                className="w-7"
+                            />
+                            <article>
+                                <p className="text-xl font-bold leading-3 mb-4">
+                                    Coding Conf
+                                </p>
+                                <p className="text-Neutral-500 text-sm">
+                                    Jan 31, 2025 / Austin, TX
+                                </p>
+                            </article>
+                        </div>
+                        <div className="flex gap-3 items-start">
+                            <img
+                                src={userImg}
+                                alt="User Image"
+                                className="rounded-lg w-12 h-12"
+                            />
+                            <article className="flex flex-col justify-between ">
+                                <p>Jonatan Kristof</p>
+                                <p className="flex gap-1">
+                                    <img
+                                        src={iconGithub}
+                                        alt="github Icon"
+                                        className="w-4.5 h-4.5"
+                                    />
+                                    <span className="text-Neutral-500 text-sm">
+                                        @Jonatankristof0101
+                                    </span>
+                                </p>
+                            </article>
+                        </div>
                     </div>
-                    <div className="flex gap-3 items-start">
-                        <img
-                            src={userImg}
-                            alt="User Image"
-                            className="rounded-lg w-12 h-12"
-                        />
-                        <article className="flex flex-col justify-between ">
-                            <p>Jonatan Kristof</p>
-                            <p className="flex gap-1">
-                                <img
-                                    src={iconGithub}
-                                    alt="github Icon"
-                                    className="w-4.5 h-4.5"
-                                />
-                                <span className="text-Neutral-500 text-sm">
-                                    @Jonatankristof0101
-                                </span>
-                            </p>
-                        </article>
+                    <div className="flex items-center">
+                        <p className="rotate-90 text-Neutral-500 text-xl">
+                            #01609
+                        </p>
                     </div>
-                </div>
+                </article>
             </section>
             <p> </p>
         </>
