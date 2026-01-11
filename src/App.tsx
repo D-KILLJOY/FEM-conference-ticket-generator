@@ -5,8 +5,31 @@ import Ticket from "./Components/Ticket.tsx";
 
 type dispState = "form" | "ticket";
 
+type InputField<T> = {
+    value: T;
+    error: boolean;
+    errormsg: string;
+};
+
+type UserDetails = {
+    avatar: InputField<File | null>;
+    name: InputField<string>;
+    email: InputField<string>;
+    github: InputField<string>;
+};
+
 function App() {
     const [status, setStatus] = useState<dispState>("form");
+    const [userDetails, setUserDetails] = useState<UserDetails>({
+        avatar: {
+            value: null,
+            error: false,
+            errormsg: "",
+        },
+        name: { value: "", error: false, errormsg: "" },
+        email: { value: "", error: false, errormsg: "" },
+        github: { value: "", error: false, errormsg: "" },
+    });
 
     function dispSet(stat: dispState) {
         setStatus(stat);
@@ -20,7 +43,15 @@ function App() {
                 className="mx-auto w-40 mb-10"
             />
 
-            {status === "form" ? <Form dispToggle={dispSet} /> : <Ticket />}
+            {status === "form" ? (
+                <Form
+                    dispToggle={dispSet}
+                    userDets={userDetails}
+                    setUserDets={setUserDetails}
+                />
+            ) : (
+                <Ticket userDets={userDetails} />
+            )}
         </main>
     );
 }

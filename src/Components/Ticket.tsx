@@ -1,22 +1,52 @@
 import patternTicket from "../assets/images/pattern-ticket.svg";
 import iconGithub from "../assets/images/icon-github.svg";
 import logoIcon from "../assets/images/logo-mark.svg";
-import userImg from "../assets/images/image-avatar.jpg";
+import { useEffect, useMemo } from "react";
 
-function Ticket() {
+type InputField<T> = {
+    value: T;
+    error: boolean;
+    errormsg: string;
+};
+
+type UserDetails = {
+    avatar: InputField<File | null>;
+    name: InputField<string>;
+    email: InputField<string>;
+    github: InputField<string>;
+};
+
+interface ticketProps {
+    userDets: UserDetails;
+}
+
+function Ticket({ userDets }: ticketProps) {
+    const avatarPreview = useMemo(() => {
+        return userDets.avatar.value
+            ? URL.createObjectURL(userDets.avatar.value)
+            : undefined;
+    }, [userDets.avatar.value]);
+
+    useEffect(() => {
+        return () => {
+            if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+        };
+    }, [avatarPreview]);
     return (
         <>
             <header className="px-2">
                 <h1 className="font-bold text-3xl text-center mb-8">
                     Congrats,{" "}
                     <span className="bg-[linear-gradient(to_right,var(--gradient-from),var(--gradient-to))] bg-clip-text text-transparent">
-                        Jonatan Kristof
+                        {userDets.name.value}
                     </span>{" "}
                     ! Your ticket is ready.
                 </h1>
                 <p className="mb-8 text-Neutral-500 text-lg leading-6 font-medium text-center">
                     We've emailed your ticket to{" "}
-                    <span className="text-Orange-700">jonatan@email.com</span>{" "}
+                    <span className="text-Orange-700">
+                        {userDets.email.value}
+                    </span>{" "}
                     and will send updates in the run up to the event.
                 </p>
             </header>
@@ -42,12 +72,12 @@ function Ticket() {
                         </div>
                         <div className="flex gap-3 items-start">
                             <img
-                                src={userImg}
+                                src={avatarPreview}
                                 alt="User Image"
                                 className="rounded-lg w-12 h-12"
                             />
                             <article className="flex flex-col justify-between ">
-                                <p>Jonatan Kristof</p>
+                                <p>{userDets.name.value}</p>
                                 <p className="flex gap-1">
                                     <img
                                         src={iconGithub}
@@ -55,7 +85,7 @@ function Ticket() {
                                         className="w-4.5 h-4.5"
                                     />
                                     <span className="text-Neutral-500 text-sm">
-                                        @Jonatankristof0101
+                                        {userDets.github.value}
                                     </span>
                                 </p>
                             </article>

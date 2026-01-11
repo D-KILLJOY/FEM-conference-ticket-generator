@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import iconUpload from "../assets/images/icon-upload.svg";
 import { MdInfoOutline } from "react-icons/md";
 
@@ -6,36 +6,27 @@ type dispState = "form" | "ticket";
 
 type FieldKey = "name" | "email" | "github";
 
-type InputField = {
-    value: string;
+type InputField<T> = {
+    value: T;
     error: boolean;
     errormsg: string;
 };
 
-interface formProps {
-    dispToggle: (state: dispState) => void;
-}
-
 type UserDetails = {
-    avatar: InputField;
-    name: InputField;
-    email: InputField;
-    github: InputField;
+    avatar: InputField<File | null>;
+    name: InputField<string>;
+    email: InputField<string>;
+    github: InputField<string>;
 };
 
-function Form({ dispToggle }: formProps) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+interface formProps {
+    dispToggle: (state: dispState) => void;
+    userDets: UserDetails;
+    setUserDets: React.Dispatch<React.SetStateAction<UserDetails>>;
+}
 
-    const [userDetails, setUserDetails] = useState<UserDetails>({
-        avatar: {
-            value: "",
-            error: false,
-            errormsg: "",
-        },
-        name: { value: "", error: false, errormsg: "" },
-        email: { value: "", error: false, errormsg: "" },
-        github: { value: "", error: false, errormsg: "" },
-    });
+function Form({ dispToggle, userDets, setUserDets }: formProps) {
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const maxSize = 500 * 1024;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -45,10 +36,10 @@ function Form({ dispToggle }: formProps) {
         if (!file) return;
 
         if (!["image/png", "image/jpeg"].includes(file.type)) {
-            setUserDetails((prev) => ({
+            setUserDets((prev) => ({
                 ...prev,
                 avatar: {
-                    value: "",
+                    value: null,
                     error: true,
                     errormsg: "Only PNG or JPG images allowed",
                 },
@@ -58,10 +49,10 @@ function Form({ dispToggle }: formProps) {
         }
 
         if (file.size > maxSize) {
-            setUserDetails((prev) => ({
+            setUserDets((prev) => ({
                 ...prev,
                 avatar: {
-                    value: "",
+                    value: null,
                     error: true,
                     errormsg:
                         "File too large, Please upload a photo under under 500KB.",
@@ -70,10 +61,10 @@ function Form({ dispToggle }: formProps) {
             return;
         }
 
-        setUserDetails((prev) => ({
+        setUserDets((prev) => ({
             ...prev,
             avatar: {
-                value: URL.createObjectURL(file),
+                value: file,
                 error: false,
                 errormsg: " ",
             },
@@ -81,7 +72,7 @@ function Form({ dispToggle }: formProps) {
     }
 
     function updateInput(key: FieldKey, value: string) {
-        setUserDetails((prev) => ({
+        setUserDets((prev) => ({
             ...prev,
             [key]: {
                 ...prev[key],
@@ -92,20 +83,23 @@ function Form({ dispToggle }: formProps) {
         }));
     }
 
+    const avatarPreview = useMemo(() => {
+        return userDets.avatar.value
+            ? URL.createObjectURL(userDets.avatar.value)
+            : undefined;
+    }, [userDets.avatar.value]);
+
     useEffect(() => {
         return () => {
-            if (userDetails.avatar.value) {
-                console.log(userDetails.avatar.value);
-                URL.revokeObjectURL(userDetails.avatar.value);
-            }
+            if (avatarPreview) URL.revokeObjectURL(avatarPreview);
         };
-    }, [userDetails.avatar.value]);
+    }, [avatarPreview]);
 
     function removeImg() {
-        setUserDetails((prev) => ({
+        setUserDets((prev) => ({
             ...prev,
             avatar: {
-                value: "",
+                value: null,
                 error: false,
                 errormsg: "",
             },
@@ -120,11 +114,11 @@ function Form({ dispToggle }: formProps) {
     }
 
     function imgDrop(e: React.DragEvent<HTMLDivElement>) {
-        if (userDetails.avatar.value) {
-            setUserDetails((prev) => ({
+        if (userDets.avatar.value) {
+            setUserDets((prev) => ({
                 ...prev,
                 avatar: {
-                    value: userDetails.avatar.value,
+                    value: userDets.avatar.value,
                     error: true,
                     errormsg: "An image has already been uploaded",
                 },
@@ -143,62 +137,62 @@ function Form({ dispToggle }: formProps) {
 
         const updatedStatus = {
             avatar: {
-                ...userDetails.avatar,
-                error: userDetails.avatar.value.trim() === "",
+                ...userDets.avatar,
+                error: userDets.avatar.value === null,
                 errormsg:
-                    userDetails.name.value.trim() === ""
+                    userDets.name.value.trim() === ""
                         ? "You need to upload a photo"
                         : "",
             },
 
             name: {
-                ...userDetails.name,
+                ...userDets.name,
                 error:
-                    userDetails.name.value.trim() === "" ||
-                    userDetails.name.value.trim().length < 2,
+                    userDets.name.value.trim() === "" ||
+                    userDets.name.value.trim().length < 2,
 
                 errormsg:
-                    userDetails.name.value.trim() === ""
+                    userDets.name.value.trim() === ""
                         ? "Name cannot be empty"
-                        : userDetails.name.value.trim().length < 2
+                        : userDets.name.value.trim().length < 2
                           ? "Name must be at least 2 Characters long"
                           : "",
             },
 
             email: {
-                ...userDetails.email,
+                ...userDets.email,
                 error:
-                    userDetails.email.value.trim() === "" ||
-                    !emailRegex.test(userDetails.email.value.trim()),
+                    userDets.email.value.trim() === "" ||
+                    !emailRegex.test(userDets.email.value.trim()),
                 errormsg:
-                    userDetails.email.value.trim() === ""
+                    userDets.email.value.trim() === ""
                         ? "Email cannot be empty"
-                        : emailRegex.test(userDetails.email.value.trim())
+                        : emailRegex.test(userDets.email.value.trim())
                           ? ""
                           : "Looks like this is not an email",
             },
             github: {
-                ...userDetails.github,
+                ...userDets.github,
                 error:
-                    userDetails.github.value.trim() === "" ||
-                    !usernameRegex.test(userDetails.github.value.trim()) ||
-                    userDetails.github.value.trim().length < 2,
+                    userDets.github.value.trim() === "" ||
+                    !usernameRegex.test(userDets.github.value.trim()) ||
+                    userDets.github.value.trim().length < 2,
                 errormsg:
-                    userDetails.github.value.trim() === ""
+                    userDets.github.value.trim() === ""
                         ? "Github username cannot be empty"
-                        : usernameRegex.test(userDetails.github.value.trim())
+                        : !usernameRegex.test(userDets.github.value.trim())
                           ? "Invalid username, include an @ before your username"
                           : "",
             },
         };
 
-        setUserDetails(updatedStatus);
+        setUserDets(updatedStatus);
         toggleState(updatedStatus);
     }
 
     function toggleState(status: UserDetails) {
         const allValid =
-            status.avatar.value.trim() !== "" &&
+            status.avatar.value !== null &&
             !status.avatar.error &&
             status.name.value.trim() !== "" &&
             !status.name.error &&
@@ -232,16 +226,16 @@ function Form({ dispToggle }: formProps) {
                     >
                         <label
                             className="mb-4 cursor-pointer"
-                            htmlFor={userDetails.avatar.value ? "" : "avatar"}
+                            htmlFor={userDets.avatar.value ? "" : "avatar"}
                         >
                             <img
                                 src={
-                                    userDetails.avatar.value
-                                        ? userDetails.avatar.value
+                                    userDets.avatar.value
+                                        ? avatarPreview
                                         : iconUpload
                                 }
                                 alt=""
-                                className={`border-2 border-Neutral-500 bg-Neutral-700/55 rounded-xl  w-12 h-12 ${userDetails.avatar.value ? "" : "p-2"}`}
+                                className={`border-2 border-Neutral-500 bg-Neutral-700/55 rounded-xl  w-12 h-12 ${userDets.avatar.value ? "" : "p-2"}`}
                             />
                         </label>
                         <input
@@ -253,7 +247,7 @@ function Form({ dispToggle }: formProps) {
                             hidden
                             className="w-full"
                         />
-                        {userDetails.avatar.value ? (
+                        {userDets.avatar.value ? (
                             <div className="flex gap-2 items-center">
                                 <button
                                     type="button"
@@ -278,7 +272,7 @@ function Form({ dispToggle }: formProps) {
                             </p>
                         )}
                     </div>
-                    {userDetails.avatar.error === false ? (
+                    {userDets.avatar.error === false ? (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
                             <MdInfoOutline className="text-sm" />
                             <p>
@@ -288,7 +282,7 @@ function Form({ dispToggle }: formProps) {
                     ) : (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
-                            <p>{userDetails.avatar.errormsg}</p>
+                            <p>{userDets.avatar.errormsg}</p>
                         </span>
                     )}
                 </div>
@@ -299,18 +293,18 @@ function Form({ dispToggle }: formProps) {
                         type="text"
                         id="name"
                         name="name"
-                        value={userDetails.name.value}
+                        value={userDets.name.value}
                         onChange={(e) =>
                             updateInput("name", e.currentTarget.value)
                         }
-                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.name.error ? "border-red-400" : ""}`}
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDets.name.error ? "border-red-400" : ""}`}
                         placeholder="John Doe"
                     />
 
-                    {userDetails.name.error && (
+                    {userDets.name.error && (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
-                            <p>{userDetails.name.errormsg}</p>
+                            <p>{userDets.name.errormsg}</p>
                         </span>
                     )}
                 </div>
@@ -321,18 +315,18 @@ function Form({ dispToggle }: formProps) {
                         type="email"
                         id="email"
                         name="email"
-                        value={userDetails.email.value}
+                        value={userDets.email.value}
                         onChange={(e) =>
                             updateInput("email", e.currentTarget.value)
                         }
-                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.email.error ? "border-red-400" : ""}`}
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDets.email.error ? "border-red-400" : ""}`}
                         placeholder="User@mail.com"
                     />
 
-                    {userDetails.email.error && (
+                    {userDets.email.error && (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
-                            <p>{userDetails.email.errormsg}</p>
+                            <p>{userDets.email.errormsg}</p>
                         </span>
                     )}
                 </div>
@@ -343,18 +337,18 @@ function Form({ dispToggle }: formProps) {
                         type="text"
                         id="github"
                         name="github"
-                        value={userDetails.github.value}
+                        value={userDets.github.value}
                         onChange={(e) =>
                             updateInput("github", e.currentTarget.value)
                         }
-                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDetails.github.error ? "border-red-400" : ""}`}
+                        className={`w-full border rounded-xl bg-Neutral-700/30 p-3  border-Neutral-500 text-lg ${userDets.github.error ? "border-red-400" : ""}`}
                         placeholder="@yourusername"
                     />
 
-                    {userDetails.github.error && (
+                    {userDets.github.error && (
                         <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
-                            <p>{userDetails.github.errormsg}</p>
+                            <p>{userDets.github.errormsg}</p>
                         </span>
                     )}
                 </div>
