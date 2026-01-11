@@ -34,15 +34,15 @@ function Ticket({ userDets }: ticketProps) {
     }, [avatarPreview]);
     return (
         <>
-            <header className="px-2">
-                <h1 className="font-bold text-3xl text-center mb-8">
+            <header className="px-2 w-full mx-auto md:max-w-130 lg:max-w-180">
+                <h1 className="font-bold text-3xl text-center mb-8 lg:text-5xl lg:leading-15">
                     Congrats,{" "}
                     <span className="bg-[linear-gradient(to_right,var(--gradient-from),var(--gradient-to))] bg-clip-text text-transparent">
                         {userDets.name.value}
                     </span>{" "}
                     ! Your ticket is ready.
                 </h1>
-                <p className="mb-8 text-Neutral-500 text-lg leading-6 font-medium text-center">
+                <p className="mb-8 text-Neutral-500 text-lg leading-7 font-medium text-center md:text-xl">
                     We've emailed your ticket to{" "}
                     <span className="text-Orange-700">
                         {userDets.email.value}
@@ -50,41 +50,43 @@ function Ticket({ userDets }: ticketProps) {
                     and will send updates in the run up to the event.
                 </p>
             </header>
-            <section className="relative w-full max-w-100 min-h-40 h-fit mt-10 mb-40">
+            <section className="relative w-full max-w-100 min-h-40 h-fit mt-10 mb-40 ">
                 <img src={patternTicket} alt="" />
 
-                <article className="w-full h-full p-4 pe-0 absolute inset-0 flex">
+                <article className="w-full h-full p-4 pe-0 absolute inset-0 flex ">
                     <div className="z-30 w-full h-full flex flex-col justify-between ">
                         <div className="flex gap-3 items-start">
                             <img
                                 src={logoIcon}
                                 alt="Coding Conf"
-                                className="w-7"
+                                className="w-7 md:w-8"
                             />
                             <article>
-                                <p className="text-xl font-bold leading-3 mb-4">
+                                <p className="text-xl font-bold leading-3 mb-4 md:text-2xl">
                                     Coding Conf
                                 </p>
-                                <p className="text-Neutral-500 text-sm">
+                                <p className="text-Neutral-500 text-sm md:text-base">
                                     Jan 31, 2025 / Austin, TX
                                 </p>
                             </article>
                         </div>
-                        <div className="flex gap-3 items-start">
+                        <div className="flex gap-3 ">
                             <img
                                 src={avatarPreview}
                                 alt="User Image"
-                                className="rounded-lg w-12 h-12"
+                                className="rounded-lg w-12 h-12 md:w-14 md:h-14"
                             />
                             <article className="flex flex-col justify-between ">
-                                <p>{userDets.name.value}</p>
-                                <p className="flex gap-1">
+                                <p className="md:text-xl">
+                                    {userDets.name.value}
+                                </p>
+                                <p className="flex gap-1 items-center">
                                     <img
                                         src={iconGithub}
                                         alt="github Icon"
-                                        className="w-4.5 h-4.5"
+                                        className="w-4.5 h-4.5 md:h-6 md:w-6 "
                                     />
-                                    <span className="text-Neutral-500 text-sm">
+                                    <span className="text-Neutral-500 text-sm md:text-lg">
                                         {userDets.github.value}
                                     </span>
                                 </p>
@@ -92,7 +94,7 @@ function Ticket({ userDets }: ticketProps) {
                         </div>
                     </div>
                     <div className="flex items-center">
-                        <p className="rotate-90 text-Neutral-500 text-xl">
+                        <p className="rotate-90 text-Neutral-500 text-xl md:text-2xl">
                             #01609
                         </p>
                     </div>

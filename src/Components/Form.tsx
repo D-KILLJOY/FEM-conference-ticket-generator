@@ -208,11 +208,11 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
 
     return (
         <>
-            <header className="px-2">
-                <h1 className="font-bold text-[1.625rem] text-center mb-5 leading-8">
+            <header className="px-2 w-full mx-auto md:max-w-130 lg:max-w-180">
+                <h1 className="font-bold text-[1.625rem] text-center mb-5 leading-8 md:leading-10 md:text-4xl lg:text-5xl lg:leading-15">
                     Your Journey to Coding Conf 2025 Starts Here!
                 </h1>
-                <p className="mb-8 text-Neutral-500 text-[1.1rem] leading-6 font-medium text-center">
+                <p className="mb-8 text-Neutral-500 text-[1.1rem] leading-7 font-medium text-center md:text-xl">
                     Secure your spot at next year's biggest coding conference.
                 </p>
             </header>

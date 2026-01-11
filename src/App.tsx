@@ -36,11 +36,14 @@ function App() {
     }
 
     return (
-        <main className="py-10 pb-25 px-4 w-full mx-auto min-h-screen bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat relative lg:bg-size-[cover,7.5rem,40%] flex flex-col items-center">
+        <main
+            className="py-10 pb-25 px-4 w-full mx-auto min-h-screen flex flex-col items-center relative bg-size-[cover,7.5rem,15.625rem] bg-position-[center,100%_4%,bottom_left] bg-no-repeat md:bg-size-[cover,17.5rem,25.625rem] md:bg-position-[center,100%_7%,bottom_left] lg:bg-size-[contain,27.5rem,50%] lg:[background-repeat:repeat,no-repeat,no-repeat]
+"
+        >
             <img
                 src={mainLogo}
                 alt="Coding Conf"
-                className="mx-auto w-40 mb-10"
+                className="mx-auto w-40 mb-10 md:w-50"
             />
 
             {status === "form" ? (
