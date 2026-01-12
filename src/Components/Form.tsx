@@ -273,17 +273,17 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
                         )}
                     </div>
                     {userDets.avatar.error === false ? (
-                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
+                        <div className="flex justify-start items-center text-xs mt-2 gap-2 text-Neutral-500">
                             <MdInfoOutline className="text-sm" />
                             <p>
                                 Upload your photo (JPG or PNG, max size: 500KB).
                             </p>
-                        </span>
+                        </div>
                     ) : (
-                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                        <div className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
                             <p>{userDets.avatar.errormsg}</p>
-                        </span>
+                        </div>
                     )}
                 </div>
                 <div className="mb-4">
@@ -302,10 +302,10 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
                     />
 
                     {userDets.name.error && (
-                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                        <div className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
                             <p>{userDets.name.errormsg}</p>
-                        </span>
+                        </div>
                     )}
                 </div>
                 <div className="mb-4">
@@ -324,10 +324,10 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
                     />
 
                     {userDets.email.error && (
-                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                        <div className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
                             <p>{userDets.email.errormsg}</p>
-                        </span>
+                        </div>
                     )}
                 </div>
                 <div className="mb-6">
@@ -346,10 +346,10 @@ function Form({ dispToggle, userDets, setUserDets }: formProps) {
                     />
 
                     {userDets.github.error && (
-                        <span className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
+                        <div className="flex justify-start items-center text-xs mt-2 gap-2 text-red-400">
                             <MdInfoOutline className="text-sm" />
                             <p>{userDets.github.errormsg}</p>
-                        </span>
+                        </div>
                     )}
                 </div>
 
